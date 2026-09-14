@@ -1,20 +1,41 @@
 # Cagômetro 💩
 
-Site de brincadeira: calcula quanto dinheiro você "ganha" no trabalho enquanto está no banheiro,
-a partir do seu salário, do número de idas ao banheiro por dia e do tempo de cada visita.
+Calculadora satírica que estima quanto do salário mensal corresponde ao tempo passado no banheiro durante o expediente.
 
-Página estática (um único `index.html`, sem build). Hospedagem no Vercel.
+## Site
+
+GitHub Pages: https://lloupp.github.io/calcshit/
+
+## Stack
+
+- HTML, CSS e JavaScript nativos;
+- zero dependências de produção;
+- sem build;
+- testes unitários com `node:assert`;
+- CI no GitHub Actions;
+- deploy automático no GitHub Pages.
 
 ## Rodar localmente
-Abra `index.html` no navegador, ou:
+
+Abra `index.html` diretamente ou sirva a pasta:
+
 ```bash
-npx serve .
+python -m http.server 8000
 ```
 
-## Deploy no Vercel
-Site estático — o Vercel detecta automaticamente. Sem build, sem framework.
+Depois acesse `http://localhost:8000`.
+
+## Testes
+
 ```bash
-vercel
+npm test
 ```
 
-_Sem valor científico ou contábil. Não mostre pro seu chefe._
+## Cálculo
+
+```text
+valor por minuto = salário / (dias por mês × horas por dia × 60)
+valor no banheiro = valor por minuto × idas por dia × minutos por ida
+```
+
+É uma brincadeira sem valor científico, contábil ou trabalhista.

@@ -1,314 +1,117 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Calculadora do Cagômetro 💩</title>
-  <meta name="description" content="Descubra quanto dinheiro você ganha (ou a empresa paga) enquanto está no banheiro no trabalho." />
-  <style>
-    :root {
-      --bg1: #6d4c2f;
-      --bg2: #8b5e34;
-      --card: #fffaf3;
-      --ink: #3b2a1a;
-      --muted: #8a7862;
-      --accent: #c07a2b;
-      --accent-strong: #a45f16;
-      --good: #2e7d32;
-      --line: #ece0d0;
-      --shadow: 0 20px 50px rgba(60, 35, 10, .35);
-    }
-    * { box-sizing: border-box; }
-    html, body { margin: 0; }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      color: var(--ink);
-      background: radial-gradient(1200px 600px at 50% -10%, #a9754a, transparent),
-                  linear-gradient(160deg, var(--bg1), var(--bg2));
-      min-height: 100vh;
-      padding: 28px 16px 60px;
-      line-height: 1.5;
-    }
-    .wrap { max-width: 720px; margin: 0 auto; }
-
-    header { text-align: center; color: #fff5e9; margin-bottom: 22px; }
-    header .poop { font-size: 64px; line-height: 1; filter: drop-shadow(0 8px 10px rgba(0,0,0,.3)); animation: wobble 3s ease-in-out infinite; }
-    @keyframes wobble { 0%,100% { transform: rotate(-4deg) translateY(0); } 50% { transform: rotate(4deg) translateY(-6px); } }
-    header h1 { font-size: clamp(28px, 6vw, 42px); margin: 8px 0 4px; letter-spacing: -.5px; }
-    header p { margin: 0; opacity: .9; font-size: 15px; }
-
-    .card {
-      background: var(--card);
-      border-radius: 22px;
-      box-shadow: var(--shadow);
-      padding: 22px;
-      margin-bottom: 18px;
-    }
-    .field { margin-bottom: 18px; }
-    .field:last-child { margin-bottom: 0; }
-    .field label { display: flex; justify-content: space-between; align-items: baseline; font-weight: 700; margin-bottom: 8px; }
-    .field label .val { color: var(--accent-strong); font-variant-numeric: tabular-nums; }
-    .hint { color: var(--muted); font-size: 13px; margin: 2px 0 0; }
-
-    input[type="number"] {
-      width: 100%;
-      font-size: 18px;
-      padding: 12px 14px;
-      border: 2px solid var(--line);
-      border-radius: 12px;
-      background: #fff;
-      color: var(--ink);
-      -moz-appearance: textfield;
-    }
-    input[type="number"]:focus { outline: none; border-color: var(--accent); }
-
-    input[type="range"] {
-      width: 100%;
-      -webkit-appearance: none;
-      appearance: none;
-      height: 8px;
-      border-radius: 8px;
-      background: var(--line);
-      margin-top: 6px;
-    }
-    input[type="range"]::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      appearance: none;
-      width: 26px; height: 26px;
-      border-radius: 50%;
-      background: var(--accent);
-      border: 3px solid #fff;
-      box-shadow: 0 3px 8px rgba(0,0,0,.25);
-      cursor: pointer;
-    }
-    input[type="range"]::-moz-range-thumb {
-      width: 26px; height: 26px;
-      border: 3px solid #fff;
-      border-radius: 50%;
-      background: var(--accent);
-      cursor: pointer;
-    }
-
-    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-    @media (max-width: 480px) { .row { grid-template-columns: 1fr; } }
-
-    details { margin-top: 4px; border-top: 1px dashed var(--line); padding-top: 14px; }
-    details summary { cursor: pointer; font-weight: 700; color: var(--accent-strong); }
-
-    .result {
-      background: linear-gradient(160deg, #2b1d10, #4a3218);
-      color: #fff6ea;
-      text-align: center;
-    }
-    .result .label { text-transform: uppercase; letter-spacing: 2px; font-size: 12px; opacity: .75; }
-    .result .big {
-      font-size: clamp(40px, 12vw, 76px);
-      font-weight: 800;
-      margin: 6px 0 2px;
-      font-variant-numeric: tabular-nums;
-      color: #ffd89b;
-      text-shadow: 0 4px 20px rgba(255,180,80,.35);
-    }
-    .result .per { opacity: .85; font-size: 14px; margin: 0 0 18px; }
-    .rank {
-      display: inline-block;
-      background: rgba(255,255,255,.12);
-      border: 1px solid rgba(255,255,255,.2);
-      padding: 8px 16px;
-      border-radius: 999px;
-      font-weight: 700;
-      font-size: 15px;
-    }
-
-    .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 18px; }
-    @media (max-width: 480px) { .grid3 { grid-template-columns: 1fr; } }
-    .stat { background: rgba(255,255,255,.08); border-radius: 14px; padding: 14px 10px; }
-    .stat .k { font-size: 12px; opacity: .7; text-transform: uppercase; letter-spacing: 1px; }
-    .stat .v { font-size: 22px; font-weight: 800; margin-top: 4px; font-variant-numeric: tabular-nums; }
-
-    .fun { margin-top: 18px; font-size: 15px; opacity: .92; }
-    .fun b { color: #ffd89b; }
-
-    .share { text-align: center; margin-top: 10px; }
-    .share button {
-      background: var(--accent); color: #fff; border: none;
-      padding: 12px 22px; border-radius: 999px; font-size: 15px; font-weight: 700;
-      cursor: pointer; box-shadow: 0 6px 16px rgba(164,95,22,.4);
-    }
-    .share button:active { transform: translateY(1px); }
-    .toast { color: #fff5e9; font-size: 13px; margin-top: 8px; min-height: 16px; }
-
-    footer { text-align: center; color: #fff5e9; opacity: .7; font-size: 13px; margin-top: 26px; }
-  </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cagômetro — quanto a firma paga pelo seu tempo no banheiro?</title>
+  <meta name="description" content="Calcule, por diversão, quanto do seu salário corresponde ao tempo passado no banheiro durante o expediente.">
+  <meta name="theme-color" content="#6d4c2f">
+  <link rel="canonical" href="https://lloupp.github.io/calcshit/">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:title" content="Cagômetro 💩">
+  <meta property="og:description" content="Quanto a firma paga pelo seu tempo no trono?">
+  <meta property="og:url" content="https://lloupp.github.io/calcshit/">
+  <meta name="twitter:card" content="summary">
+  <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
-  <div class="wrap">
-    <header>
-      <div class="poop">💩</div>
+  <a class="skip-link" href="#calculadora">Pular para a calculadora</a>
+
+  <main class="wrap" id="calculadora">
+    <header class="hero">
+      <div class="poop" aria-hidden="true">💩</div>
       <h1>Cagômetro</h1>
-      <p>Quanto a firma te paga pra você ficar no trono? Bora descobrir.</p>
+      <p>Quanto a firma te paga enquanto você está no trono?</p>
     </header>
 
-    <section class="card">
-      <div class="field">
-        <label for="salario">Salário mensal (R$) <span class="val" id="salarioVal">R$ 3.000</span></label>
-        <input type="number" id="salario" min="0" step="100" value="3000" inputmode="numeric" />
+    <section class="card form-card" aria-labelledby="dados-title">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Seus dados</p>
+          <h2 id="dados-title">Monte o cálculo</h2>
+        </div>
+        <button class="ghost-button" id="resetBtn" type="button">Restaurar padrão</button>
       </div>
 
       <div class="field">
-        <label for="vezes">Idas ao banheiro por dia <span class="val" id="vezesVal">1</span></label>
-        <input type="range" id="vezes" min="0" max="10" step="1" value="1" />
-        <p class="hint">Conta só as visitas "demoradas", você sabe do que eu tô falando.</p>
+        <label for="salario">Salário mensal <span class="value" id="salarioVal">R$ 3.000</span></label>
+        <div class="money-input">
+          <span aria-hidden="true">R$</span>
+          <input type="number" id="salario" min="0" max="1000000" step="100" value="3000" inputmode="decimal" autocomplete="off">
+        </div>
+        <p class="hint" id="salarioHint">Use o valor mensal que você quer considerar no cálculo.</p>
       </div>
 
       <div class="field">
-        <label for="minutos">Minutos por ida <span class="val" id="minutosVal">15 min</span></label>
-        <input type="range" id="minutos" min="1" max="60" step="1" value="15" />
-        <p class="hint">Tempo de trono incluindo a rolada no celular.</p>
+        <label for="vezes">Idas demoradas por dia <span class="value" id="vezesVal">1</span></label>
+        <input type="range" id="vezes" min="0" max="10" step="1" value="1" aria-describedby="vezesHint">
+        <p class="hint" id="vezesHint">Conta só as visitas que realmente viram uma pausa.</p>
+      </div>
+
+      <div class="field">
+        <label for="minutos">Minutos por ida <span class="value" id="minutosVal">15 min</span></label>
+        <input type="range" id="minutos" min="1" max="60" step="1" value="15" aria-describedby="minutosHint">
+        <p class="hint" id="minutosHint">Inclua o tempo sentado, não o deslocamento até o banheiro.</p>
       </div>
 
       <details>
         <summary>Ajustar jornada de trabalho</summary>
-        <div class="row" style="margin-top:14px">
-          <div class="field" style="margin:0">
-            <label for="dias">Dias/mês <span class="val" id="diasVal">22</span></label>
-            <input type="number" id="dias" min="1" max="31" step="1" value="22" inputmode="numeric" />
+        <div class="row details-grid">
+          <div class="field compact">
+            <label for="dias">Dias por mês <span class="value" id="diasVal">22</span></label>
+            <input type="number" id="dias" min="1" max="31" step="1" value="22" inputmode="numeric">
           </div>
-          <div class="field" style="margin:0">
-            <label for="horas">Horas/dia <span class="val" id="horasVal">8</span></label>
-            <input type="number" id="horas" min="1" max="24" step="0.5" value="8" inputmode="decimal" />
+          <div class="field compact">
+            <label for="horas">Horas por dia <span class="value" id="horasVal">8</span></label>
+            <input type="number" id="horas" min="0.5" max="24" step="0.5" value="8" inputmode="decimal">
           </div>
         </div>
       </details>
     </section>
 
-    <section class="card result">
-      <div class="label">Você ganha, cagando, por mês</div>
+    <section class="card result" aria-labelledby="resultado-title" aria-live="polite">
+      <p class="eyebrow result-eyebrow">Resultado</p>
+      <h2 id="resultado-title">Você ganha, no banheiro, por mês</h2>
       <div class="big" id="mes">R$ 0</div>
       <p class="per" id="porDia">R$ 0 por dia • R$ 0 por ano</p>
       <div class="rank" id="rank">🚽 Iniciante do trono</div>
 
-      <div class="grid3">
+      <div class="stats" aria-label="Resumo do cálculo">
         <div class="stat">
-          <div class="k">Tempo/mês</div>
-          <div class="v" id="tempoMes">0 h</div>
+          <span>Tempo/mês</span>
+          <strong id="tempoMes">0 h</strong>
         </div>
         <div class="stat">
-          <div class="k">Tempo/ano</div>
-          <div class="v" id="tempoAno">0 h</div>
+          <span>Tempo/ano</span>
+          <strong id="tempoAno">0 h</strong>
         </div>
         <div class="stat">
-          <div class="k">R$/minuto</div>
-          <div class="v" id="porMin">R$ 0</div>
+          <span>Valor/minuto</span>
+          <strong id="porMin">R$ 0</strong>
         </div>
       </div>
 
       <p class="fun" id="fun"></p>
     </section>
 
-    <div class="share">
-      <button id="shareBtn">📋 Copiar meu resultado</button>
-      <div class="toast" id="toast"></div>
-    </div>
+    <section class="actions" aria-label="Compartilhamento">
+      <button class="primary-button" id="shareBtn" type="button">Compartilhar resultado</button>
+      <p class="toast" id="toast" role="status" aria-live="polite"></p>
+    </section>
+
+    <details class="card methodology">
+      <summary>Como o cálculo funciona?</summary>
+      <p>O Cagômetro divide o salário mensal pelos minutos da jornada mensal e multiplica esse valor pelo tempo informado no banheiro.</p>
+      <p class="formula"><code>(salário ÷ dias ÷ horas ÷ 60) × idas × minutos</code></p>
+      <p>É uma brincadeira: não considera benefícios, impostos, pausas previstas, produtividade nem regras trabalhistas.</p>
+    </details>
 
     <footer>
-      Brincadeira sem valor científico (nem contábil). Não mostre pro seu chefe. 💩
+      <p>Brincadeira sem valor científico, contábil ou trabalhista.</p>
     </footer>
-  </div>
+  </main>
 
-  <script>
-    const $ = (id) => document.getElementById(id);
-    const inputs = ["salario", "vezes", "minutos", "dias", "horas"];
-
-    const brl = (n) => n.toLocaleString("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 2 });
-    const brl0 = (n) => n.toLocaleString("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 });
-
-    function ranking(anual) {
-      if (anual <= 0) return "🧻 Bexiga de aço";
-      if (anual < 200) return "🚽 Iniciante do trono";
-      if (anual < 600) return "💩 Cagador amador";
-      if (anual < 1500) return "🏆 Profissional do bidê";
-      if (anual < 4000) return "👑 Rei(nha) da privada";
-      return "🚀 Lenda dos intestinos";
-    }
-
-    function fatoDivertido(anual) {
-      const cerveja = 6, cafe = 8, pizza = 55;
-      if (anual <= 0) return "Você não perde tempo — ou não usa o banheiro da firma. Respeito.";
-      return `Isso dá pra comprar <b>${Math.floor(anual / cerveja)}</b> cervejas 🍺, ` +
-             `<b>${Math.floor(anual / cafe)}</b> cafés ☕ ou <b>${Math.floor(anual / pizza)}</b> pizzas 🍕 por ano — ` +
-             `tudo enquanto você tava sentado(a) pensando na vida.`;
-    }
-
-    function horas(min) {
-      const h = min / 60;
-      if (h < 1) return `${Math.round(min)} min`;
-      return `${h.toLocaleString("pt-BR", { maximumFractionDigits: 1 })} h`;
-    }
-
-    // contador animado
-    let raf, cur = 0;
-    function animate(target) {
-      cancelAnimationFrame(raf);
-      const start = cur, t0 = performance.now(), dur = 500;
-      function step(t) {
-        const p = Math.min((t - t0) / dur, 1);
-        cur = start + (target - start) * (1 - Math.pow(1 - p, 3));
-        $("mes").textContent = brl0(cur);
-        if (p < 1) raf = requestAnimationFrame(step);
-        else { cur = target; $("mes").textContent = brl0(target); }
-      }
-      raf = requestAnimationFrame(step);
-    }
-
-    function calc() {
-      const salario = Math.max(0, +$("salario").value || 0);
-      const vezes = +$("vezes").value;
-      const minutos = +$("minutos").value;
-      const dias = Math.max(1, +$("dias").value || 1);
-      const horasDia = Math.max(0.1, +$("horas").value || 0.1);
-
-      // rótulos
-      $("salarioVal").textContent = brl0(salario);
-      $("vezesVal").textContent = vezes;
-      $("minutosVal").textContent = `${minutos} min`;
-      $("diasVal").textContent = dias;
-      $("horasVal").textContent = horasDia;
-
-      const valorMinuto = salario / (dias * horasDia * 60);
-      const minutosDia = vezes * minutos;
-      const porDia = valorMinuto * minutosDia;
-      const porMes = porDia * dias;
-      const porAno = porMes * 12;
-
-      animate(porMes);
-      $("porDia").textContent = `${brl(porDia)} por dia • ${brl0(porAno)} por ano`;
-      $("rank").textContent = ranking(porAno);
-      $("tempoMes").textContent = horas(minutosDia * dias);
-      $("tempoAno").textContent = horas(minutosDia * dias * 12);
-      $("porMin").textContent = brl(valorMinuto);
-      $("fun").innerHTML = fatoDivertido(porAno);
-
-      window._resumo = `💩 Cagômetro: eu ganho ${brl0(porMes)}/mês (${brl0(porAno)}/ano) sentado no trono do trabalho. Ranking: ${ranking(porAno)}`;
-    }
-
-    inputs.forEach((id) => {
-      $(id).addEventListener("input", calc);
-    });
-
-    $("shareBtn").addEventListener("click", async () => {
-      const txt = window._resumo || "";
-      try {
-        if (navigator.share) { await navigator.share({ text: txt }); return; }
-        await navigator.clipboard.writeText(txt);
-        $("toast").textContent = "Copiado! Cola no grupo da firma 😏";
-      } catch (e) {
-        $("toast").textContent = "Não rolou copiar automático — mas o número tá aí em cima 👆";
-      }
-      setTimeout(() => ($("toast").textContent = ""), 3000);
-    });
-
-    calc();
-  </script>
+  <script type="module" src="./app.js"></script>
 </body>
 </html>
