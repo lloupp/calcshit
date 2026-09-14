@@ -1,0 +1,8 @@
+{
+  "name": "cagometro",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node tests/calc.test.mjs"
+  }
+}
